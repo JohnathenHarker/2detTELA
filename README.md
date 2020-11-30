@@ -2,7 +2,9 @@
 Program to determinise transition-based Emerson-Lei automata
 
 ## Installation
-TODO: how to install Spot and compile the software 
+TODO: how to install Spot 
+
+The source code is compiled by executing `./compile.sh`
 
 ## Run Experiments
 TODO: how to run the skript with the experiments: different skirpts for different data sets

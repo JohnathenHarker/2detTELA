@@ -7,7 +7,7 @@ import csv
 path = "temp_hoas/benchmarkA"
 
 # timeout for the determinisation in s
-TIMEOUT = 60
+TIMEOUT = 10
 
 # extract all .hoa files from the dictionary
 automata = glob.glob(path+"/*.hoa")

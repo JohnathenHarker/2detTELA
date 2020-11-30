@@ -36,3 +36,6 @@
 
 # csv files
 *.csv
+
+# compiled program
+source_code/2detTELA
