@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# hoa files
+*.hoa
+
+# csv files
+*.csv
