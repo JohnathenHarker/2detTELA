@@ -40,10 +40,9 @@ int main(int argc, char* argv[])
             }  
         } 
     }
-    int states = 200;
-    float time = 1.1234;
-    int acc = 32;
-    int old_acc = 12;
+    int states = 0;
+    float time = 0;
+    int acc = -1;
 
     // read automaton from file
     spot::parsed_aut_ptr pa = parse_aut(hoa_file, spot::make_bdd_dict());
@@ -55,8 +54,6 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    // calculate length of the old acc condition
-    old_acc = size_of_acc_condition(pa->aut->get_acceptance());
 
     clock_t t;
     if (type == "spot")
@@ -88,7 +85,12 @@ int main(int argc, char* argv[])
         time = ((float)t)/CLOCKS_PER_SEC;
         acc = size_of_acc_condition(res->get_acceptance());
     }
+    if (type == "old_aut")
+    {
+        states = pa->aut->num_states();
+        acc = size_of_acc_condition(pa->aut->get_acceptance().to_dnf());
+    }
 
-    cout << " states: " << states << " time: " << time << " acc: " << acc << " old_acc: " << old_acc <<endl;
+    cout << " states: " << states << " time: " << time << " acc: " << acc <<endl;
     //cout << 10 <<" times more data" << endl;
 }
