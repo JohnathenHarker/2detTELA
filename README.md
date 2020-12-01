@@ -22,7 +22,7 @@ You need to approve some of the steps to install curl, g++ and make.
 If you have problems with Spot, you might consult [this page](https://spot.lrde.epita.fr/install.html) or Spot's webpage related to problems with [compiling C++ code](https://spot.lrde.epita.fr/compile.html).
 
 ### Compile the source code
-I you used `./install.sh` you can skip this step. Otherwise, compile the source code  by executing `./compile.sh`. 
+If you used `./install.sh`, you can skip this step. Otherwise, compile the source code  by executing `./compile.sh`. 
 ## Run Experiments
 TODO: how to run the skript with the experiments: different skirpts for different data sets
 TODO: where are the .hoa files stored
