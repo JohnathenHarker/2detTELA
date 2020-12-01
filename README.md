@@ -2,26 +2,26 @@
 Program to determinise transition-based Emerson-Lei automata
 
 ## Requirements
-You need the g++ compiler to compile the source code and a version of Python 3 to run the experiments. Additionally you need Spot, which can be installed using the following instructions. **Note:** you need to configure Spot in such a way that it uses more acceptance sets than usual to run the experiments.
+You need 
+- the g++ compiler to compile the source code 
+- a version of Python 3 to run the experiments. 
+- the Spot library **Note:** you need to configure Spot in such a way that it uses more acceptance sets than usual to run the experiments.
 
 ## Installation
 ### Install Spot 
-You need Spot to execute the program. The software was tested with **Spot 2.9.4**. 
-First, download Spot from its [website](https://www.lrde.epita.fr/dload/spot/).
 
-Perform the following steps to install Spot:  
-1.`cd` to the directory containing the package's source code  
-2. run the following commands:  
-
-    ./configure  --enable-max-accsets=256  
-    make  
-    make install
+You need Spot to execute the program. The software was tested with **Spot 2.9.4**. The esiest way is to run the skript `./install.sh`. This downloads and installs
+- curl
+- g++ 
+- make
+- Spot 2.9.4 from [this](https://www.lrde.epita.fr/dload/spot/) website
+- configures Spot with `--enable-max-accsets=256 --disable-python`
+You need to approve some of the steps to install curl, g++ and make.
  
 If you have problems with Spot, you might consult [this page](https://spot.lrde.epita.fr/install.html) or Spot's webpage related to problems with [compiling C++ code](https://spot.lrde.epita.fr/compile.html).
 
 ### Compile the source code
-Compile the source code  by executing `./compile.sh`.
-
+I you used `./install.sh` you can skip this step. Otherwise, compile the source code  by executing `./compile.sh`. 
 ## Run Experiments
 TODO: how to run the skript with the experiments: different skirpts for different data sets
 TODO: where are the .hoa files stored
