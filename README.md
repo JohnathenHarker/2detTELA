@@ -16,6 +16,7 @@ You need Spot to execute the program. The software was tested with **Spot 2.9.4*
 - make
 - Spot 2.9.4 from [this](https://www.lrde.epita.fr/dload/spot/) website
 - configures Spot with `--enable-max-accsets=256 --disable-python`
+
 You need to approve some of the steps to install curl, g++ and make.
  
 If you have problems with Spot, you might consult [this page](https://spot.lrde.epita.fr/install.html) or Spot's webpage related to problems with [compiling C++ code](https://spot.lrde.epita.fr/compile.html).
