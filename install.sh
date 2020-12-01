@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# download curl
+echo downloading curl
+sudo apt install curl
+
 # download and copile spot
 echo downloading spot
 curl -o spot-2.9.4.tar.gz https://www.lrde.epita.fr/dload/spot/spot-2.9.4.tar.gz -fsSL
