@@ -13,7 +13,8 @@ cd spot-2.9.4
 
 echo making spot; this may take some time
 make
-make install
+sudo make install
+sudo ldconfig
 
 cd ..
 
