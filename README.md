@@ -28,4 +28,4 @@ Call `Python3 benchmarkname.py` to run a benchmark.
 The `.hoa` files of the automata for each benchmark get stored in a seperate folder in the folder `temp_hoas`.  
 The `.csv` file with the evaluation of the benchmark gets stored in the folder `results`.  
 Each Python skrip runs one benchmark:
-- `benchmarkA.py`: 1500 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Random acceptance conditions range from lenght 2 to 15 (in DNF). The timeout is 60s.
+- `benchmarkA.py`: 2000 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Random acceptance conditions range from lenght 2 to 21 (in DNF). The timeout is 120s.
