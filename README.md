@@ -25,7 +25,12 @@ If you have problems with Spot, you might consult [this page](https://spot.lrde.
 If you used `./install.sh`, you can skip this step. Otherwise, compile the source code  by executing `./compile.sh`. 
 ## Run Experiments
 Call `Python3 benchmarkname.py` to run a benchmark.  
+Each benchmark skript contains the variables `TIMEOUT` and `CORES`. Change these to adjust the timeout of the determinisations and the number of parallel executions.  
+
 The `.hoa` files of the automata for each benchmark get stored in a seperate folder in the folder `temp_hoas`.  
 The `.csv` file with the evaluation of the benchmark gets stored in the folder `results`.  
+After finishing the first determinisation, the skrip shows the progress of the determinisations.  
+
 Each Python skrip runs one benchmark:
-- `benchmarkA.py`: 2000 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Random acceptance conditions range from lenght 2 to 21 (in DNF). The timeout is 120s.
+- `benchmarkA.py`: 2000 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Random acceptance conditions range from lenght 2 to 21 (in DNF). The timeout is 120s. Compares Spot and determinisation via product.  
+- `benchmarkB.py`: 500 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Acceptance condition where Spot struggles. The timeout is 300s. Compares Spot and determinisation via product.
