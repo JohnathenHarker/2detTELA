@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 # timeout for the determinisation in s
-TIMEOUT = 60
+TIMEOUT = 120
 
 # number of parallel processes
 # should be at least one core less than the number of cores of the system, to give the watchdog processes some ressources
@@ -95,7 +95,7 @@ print('Generating automata')
 lower_bound = 2
 upper_bound = 21
 # number of generated automata
-n = 20
+n = 2000
 
 # call program to produce automata
 p = Popen(['source_code/benchmarkA', '--file', path+"/automaton", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
