@@ -25,7 +25,7 @@ If you have problems with Spot, you might consult [this page](https://spot.lrde.
 If you used `./install.sh`, you can skip this step. Otherwise, compile the source code  by executing `./compile.sh`. 
 ## Run Experiments
 Call `Python3 benchmarkname.py` to run a benchmark.  
-Each benchmark skript contains the variables `TIMEOUT` and `CORES`. Change these to adjust the timeout of the determinisations and the number of parallel executions.  
+Each benchmark skript contains the variables `TIMEOUT` and `CORES`. Change these to adjust the timeout of the determinisations and the number of parallel executions.  Keep an eye on the RAM of your machine: my computer allows every parallel part of the program to allocate ~2GB of memory per minute. This might lead to problems, if the timeout is set to high. 
 
 The `.hoa` files of the automata for each benchmark get stored in a seperate folder in the folder `temp_hoas`.  
 The `.csv` file with the evaluation of the benchmark gets stored in the folder `results`.  
