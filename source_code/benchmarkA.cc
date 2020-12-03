@@ -38,13 +38,17 @@ void produce_automata(const unsigned number_of_examples, const string path, cons
         spot::twa_graph_ptr aut;
         do
         {
-            auto acc = spot::acc_cond::acc_code::random(6, 0.8);
+            auto acc = spot::acc_cond::acc_code::random(8, 0.8);
+            while (size_of_acc_condition(acc.to_dnf()) != (i%diff) + lower_bound)
+            {
+                acc = spot::acc_cond::acc_code::random(8, 0.8);
+            }
             //auto acc = spot::acc_cond::acc_code("(Fin(0) & Inf(1) & Inf(2)) | (Fin(1) & Inf(3) & Inf(4)) | (Fin(2) & Inf(5) & Inf(6))");
            // auto acc = spot::acc_cond::acc_code("(Fin(0) | Inf(1)) & (Fin(2) | Inf(3)) & (Fin(4) | Inf(5)) ");
             //auto acc = spot::acc_cond::acc_code("(Fin(0) | Inf(1)) & (Fin(2) | Inf(3)) ");
             auto bdd = spot::make_bdd_dict();
             auto props = spot::create_atomic_prop_set(2);
-            aut = spot::random_graph(12, 0.2, &props, bdd, 6, 0.2, 0.5, false, false, false);
+            aut = spot::random_graph(12, 0.2, &props, bdd, 8, 0.2, 0.5, false, false, false);
             aut->set_acceptance(acc);
 
             // we search for automata that are non-deterministic and the dnf has a size >=2

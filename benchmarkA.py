@@ -8,10 +8,10 @@ from datetime import datetime
 
 
 # timeout for the determinisation in s
-TIMEOUT = 120
+TIMEOUT = 60
 
 # number of parallel processes
-# should be at least one core less than the number of cores of the system, to give the our sceduling process some ressources
+# should be at least one core less than the number of cores of the system, to give the watchdog processes some ressources
 # here: leave two cores for the system
 CORES = mp.cpu_count()-2
 
@@ -63,6 +63,14 @@ def evaluate_aut(aut):
 evaluation = []
 def log_result(result):
     evaluation.append(result)
+    m = len(automata)
+    delta = datetime.now() - start_time
+    prediction = start_time + 1.0*m/len(evaluation) * delta
+    if (m > len(evaluation)):
+        print("determinised" , len(evaluation) , "out of", m,  "automata; prediction: finished at", prediction.strftime('%Y-%m-%d %H:%M:%S') , end="\r" )
+    else:
+        print("determinised" , len(evaluation) , "out of", m,  "automata; prediction: finished at", prediction.strftime('%Y-%m-%d %H:%M:%S'))
+
 
 
 
@@ -79,15 +87,15 @@ if not os.path.exists(path_evaluation):
 
 
 ## produce examples
-
-print('starting at', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+start_time = datetime.now()
+print('starting at', start_time.strftime('%Y-%m-%d %H:%M:%S'))
 print('Generating automata')
 
 # upper and lower bound of the acc condition
 lower_bound = 2
 upper_bound = 21
 # number of generated automata
-n = 2000
+n = 20
 
 # call program to produce automata
 p = Popen(['source_code/benchmarkA', '--file', path+"/automaton", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
@@ -99,15 +107,15 @@ p.wait()
 automata = glob.glob(path+"/*.hoa")
 
 #sort automata names
-automata.sort()
-automata.sort(key=len)
+#automata.sort()
+#automata.sort(key=len)
 
 # process evaluations in parallel
 
 
 pool = mp.Pool(CORES) 
 
-print('running ', CORES , ' processes in parallel to determinise the automata')
+print('running', CORES , 'processes in parallel to determinise the automata')
 for aut in automata:
     pool.apply_async(evaluate_aut, args=(aut,), callback = log_result)
 pool.close()  
