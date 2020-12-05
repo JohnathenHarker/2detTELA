@@ -11,6 +11,7 @@ g++ 2detTELA.cc my_determinization.o remfin.o -lspot -lbddx -O2 -o 2detTELA
 # compile for benchmark generations
 g++ benchmarkA.cc my_determinization.o remfin.o -lspot -lbddx -O2 -o benchmarkA
 g++ benchmarkB.cc my_determinization.o remfin.o -lspot -lbddx -O2 -o benchmarkB
+g++ benchmarkC.cc my_determinization.o remfin.o -lspot -lbddx -O2 -o benchmarkC
 
 # return to parent dictionary
 cd ..
