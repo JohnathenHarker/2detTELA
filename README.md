@@ -32,5 +32,6 @@ The `.csv` file with the evaluation of the benchmark gets stored in the folder `
 After finishing the first determinisation, the skrip shows the progress of the determinisations.  
 
 Each Python skrip runs one benchmark:
-- `benchmarkA.py`: 2000 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Random acceptance conditions range from lenght 2 to 21 (in DNF). The timeout is 120s. Compares Spot and determinisation via product.  
+- `benchmarkA.py`: 2000 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 120s. Compares Spot and determinisation via product.  
 - `benchmarkB.py`: 500 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Acceptance condition where Spot struggles. The timeout is 300s. Compares Spot and determinisation via product.
+- `benchmarkC.py`: 2000 automata with 12 states and 0.17 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 120s. Compares Spot and determinisation via product.
