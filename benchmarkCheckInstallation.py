@@ -100,7 +100,7 @@ upper_bound = 21
 n = 20
 
 # call program to produce automata
-p = Popen(['source_code/benchmarkCheckInstallation', '--file', path+"/automaton", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
+p = Popen(['source_code/benchmarkA', '--file', path+"/automaton", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
 p.wait()
 
 
