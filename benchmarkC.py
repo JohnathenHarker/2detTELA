@@ -20,6 +20,9 @@ CORES = mp.cpu_count()-2
 path = "temp_hoas/benchmarkC"
 path_evaluation = "results"
 
+# set path variable for the process (and thereofre all its children)
+Popen(['export LD_LIBRARY_PATH=$HOME/usr/lib:$LD_LIBRARY_PATH" '], shell = True)
+
 
 def popen_evaluation(command):
     # default values
