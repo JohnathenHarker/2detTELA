@@ -10,16 +10,16 @@ You need
 ## Installation
 ### Install Spot 
 
-You need Spot to execute the program. The software was tested with **Spot 2.9.4**. The esiest way is to run the skript `./install.sh`. This downloads and installs
+You need Spot to execute the program. The software was tested with **Spot 2.9.4**. The esiest way is to run the skript `./install.sh`. This requires
 - curl
 - g++ 
-- make
-- Spot 2.9.4 from [this](https://www.lrde.epita.fr/dload/spot/) website
-- configures Spot with `--enable-max-accsets=256 --disable-python`
+- make  
 
-You need to approve some of the steps to install curl, g++ and make.
- 
-If you have problems with Spot, you might consult [this page](https://spot.lrde.epita.fr/install.html) or Spot's webpage related to problems with [compiling C++ code](https://spot.lrde.epita.fr/compile.html).
+The skrip downloads
+- Spot 2.9.4 from [this](https://www.lrde.epita.fr/dload/spot/) website
+- configures Spot with `--prefix = ~/usr --enable-max-accsets=256 --disable-python`
+
+Spot is installed locally in the home directory. If you have problems with Spot, you might consult [this page](https://spot.lrde.epita.fr/install.html) or Spot's webpage related to problems with [compiling C++ code](https://spot.lrde.epita.fr/compile.html).
 
 ### Compile the source code
 If you used `./install.sh`, you can skip this step. Otherwise, compile the source code  by executing `./compile.sh`. 
