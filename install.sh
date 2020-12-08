@@ -15,4 +15,7 @@ cd ..
 # run compile.sh
 ./compile.sh
 
+# install psutil
+python3 -m pip install psutil
+
 echo finished installation of 2detTELA

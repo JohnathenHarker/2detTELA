@@ -1,17 +1,22 @@
+# test own scheduling algorithm
+
 import glob
 from subprocess import Popen, PIPE
 from time import sleep, perf_counter
 import csv
 import os
+import psutil
 import multiprocessing as mp
 from datetime import datetime
 
 
 # timeout for the determinisation in s
-TIMEOUT = 10
+TIMEOUT = 20
 
 # IDs of the cores, where the benchmark runs; the first core is used for the wathchdog processes
-CORES = [0,1,2, 3, 4]
+CORES = [0,1,2,3,4,5,6]
+# memory limit for the processes in kiB
+MEM_LIMIT = 1000000
 
 # path where the automata for the benchmark are stored
 
@@ -30,15 +35,23 @@ def popen_evaluation(command, core):
     result['time'] = -1
     result['states'] = -1
     result['acc'] = -1
-    result['timeout'] = True
+    result['timeout'] = False
+    result['memout'] = False
 
     # pin task to CPU 'core'
     taskset = ['taskset', '-c', str(core)]
 
-    command = taskset +command
+    command = taskset + command
+
+    # start determinisation
     p = Popen(command, stdout=PIPE, stderr=PIPE)
     
     tic = perf_counter()
+
+    # command to get the memory
+    mem_command =['ps -q '+ str(p.pid) + ' -o rss --no-headers']
+    mem_command = ['ps', '-p', str(p.pid), '-o', 'rss', '--no-headers']
+    memory = 0
     toc = perf_counter()
     while (toc-tic) < TIMEOUT:
         if p.poll() is not None:
@@ -52,9 +65,22 @@ def popen_evaluation(command, core):
                 if (output[i] == 'acc:'):
                     result['acc'] = int(output[i+1])
             return result
+        # computate the memory of the determinisation process
+        memory = Popen( mem_command, stdout=PIPE ).communicate()[0].decode('UTF-8')[:-1]
+        try:
+            # if process does not exist anymore, this does not work
+            mem = int(memory)
+        except:
+            mem = 0
+        if mem > MEM_LIMIT:
+            # process needs to much memory
+            p.kill()
+            result['memout'] = True
+            return result
         sleep(0.1)
         toc = perf_counter()
     p.kill()
+    result['timeout'] = True
     return result
 
 
@@ -62,13 +88,18 @@ def evaluate_aut(aut, core):
     old_automaton = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'old_aut'], core)
     spot = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'spot'], core)
     product = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'product'], core)
-    return [aut,old_automaton, spot, product]
+    return [core, aut,old_automaton, spot, product]
 
 
 # store the results of the evaluations
 evaluation = []
+
+
+
 def log_result(result):
-    evaluation.append(result)
+    core = result[0]
+    idleCores.append(core)
+    evaluation.append(result[1:])
     m = len(automata)
     delta = datetime.now() - start_time
     prediction = start_time + 1.0*m/len(evaluation) * delta
@@ -76,12 +107,15 @@ def log_result(result):
         print("determinised" , len(evaluation) , "out of", m,  "automata; prediction: finished at", prediction.strftime('%Y-%m-%d %H:%M:%S') , end="\r" )
     else:
         print("determinised" , len(evaluation) , "out of", m,  "automata; prediction: finished at", prediction.strftime('%Y-%m-%d %H:%M:%S'))
-
+    
 
 
 
 
 #### main part ###
+
+# store the cores that are idle
+idleCores = CORES[1:]
 
 ## create directories
 
@@ -98,8 +132,8 @@ print('starting at', start_time.strftime('%Y-%m-%d %H:%M:%S'))
 print('Generating automata')
 
 # upper and lower bound of the acc condition
-lower_bound = 2
-upper_bound = 21
+lower_bound = 10
+upper_bound = 20
 # number of generated automata
 n = 20
 
@@ -119,17 +153,25 @@ automata = glob.glob(path+"/*.hoa")
 # process evaluations in parallel
 
 
-pool = mp.Pool(len(CORES)-1) 
+
+pool = mp.Pool(len(idleCores))
 pool._maxtasksperchild = 1
 
-print('running', len(CORES)-1 , 'processes in parallel to determinise the automata')
-i = 0
+
+print('running', len(CORES)-1 , 'processes in parallel on the following cores:', idleCores)
 for aut in automata:
-    core = (i% (len(CORES) -1) )+1
+    while (len(idleCores) <1):
+        # wait until a core is idle
+        sleep(0.1)
+    # start process on the first idle core
+    core = idleCores[0]
+    idleCores = idleCores[1:]
     pool.apply_async(evaluate_aut, args=(aut, core, ), callback = log_result)
-    i = i+1
-pool.close()  
+   
+
+pool.close()
 pool.join()
+
 
 
 print('write result into ', path_evaluation +'/benchmarkCheckInstallation.csv')
