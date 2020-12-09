@@ -17,7 +17,7 @@ You need Spot to execute the program. The software was tested with **Spot 2.9.4*
 
 The skrip downloads
 - Spot 2.9.4 from [this](https://www.lrde.epita.fr/dload/spot/) website
-- configures Spot with `--prefix = ~/usr --enable-max-accsets=256 --disable-python`
+- configures Spot with `--prefix ~/usr --enable-max-accsets=256 --disable-python`
 
 Spot is installed locally in the home directory. If you have problems with Spot, you might consult [this page](https://spot.lrde.epita.fr/install.html) or Spot's webpage related to problems with [compiling C++ code](https://spot.lrde.epita.fr/compile.html).
 
