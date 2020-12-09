@@ -11,13 +11,13 @@ from datetime import datetime
 
 
 # timeout for the determinisation in s
-TIMEOUT = 600
+TIMEOUT = 1500
 
 # IDs of the cores that the program should use; the first two cores are used for the wathchdog processes, the other cores for the parallel determinisation
-CORES = [0,1,2,3,4,5]
+CORES = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
 
 # memory limit for the processes in kiB
-MEM_LIMIT = 10000000 # 10 GiB
+MEM_LIMIT = 20000000 # 20 GiB
 
 # path where the automata for the benchmark are stored
 
