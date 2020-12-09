@@ -30,7 +30,7 @@ home = os.environ['HOME']
 os.environ['LD_LIBRARY_PATH'] = '%s/usr/lib:%s' % (home,lib_path)
 
 # pin this and watchdog processes to core 0 and 1
-os.system("taskset -p -c " + str(CORES[0]) +" "+ str(CORES[1]) + " %d" % os.getpid())
+os.system("taskset -p -c " + str(CORES[0]) +","+ str(CORES[1]) + " %d" % os.getpid())
 
 def popen_evaluation(command, core):
     # default values
