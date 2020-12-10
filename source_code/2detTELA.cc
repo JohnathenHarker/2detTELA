@@ -85,6 +85,37 @@ int main(int argc, char* argv[])
         time = ((float)t)/CLOCKS_PER_SEC;
         acc = size_of_acc_condition(res->get_acceptance());
     }
+
+    if (type == "me1" || type == "Me1")
+    {
+        t = clock();
+        auto res =  my_to_deterministic_tgba(pa->aut, true, false);
+        t = clock() -t;
+        states = res->num_states();
+        time = ((float)t)/CLOCKS_PER_SEC;
+        acc = size_of_acc_condition(res->get_acceptance());
+    }
+
+    if (type == "me2" || type == "Me2")
+    {
+        t = clock();
+        auto res =  my_to_deterministic_tgba_2(pa->aut, true, false);
+        t = clock() -t;
+        states = res->num_states();
+        time = ((float)t)/CLOCKS_PER_SEC;
+        acc = size_of_acc_condition(res->get_acceptance());
+    }
+
+    if (type == "me3" || type == "Me3")
+    {
+        t = clock();
+        auto res =  my_to_deterministic_tgba_3(pa->aut, true, false);
+        t = clock() -t;
+        states = res->num_states();
+        time = ((float)t)/CLOCKS_PER_SEC;
+        acc = size_of_acc_condition(res->get_acceptance());
+    }
+
     if (type == "old_aut")
     {
         states = pa->aut->num_states();
