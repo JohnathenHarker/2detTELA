@@ -39,6 +39,7 @@ After finishing the first determinisation, the skrip shows the progress of the d
 
 Each Python skrip runs one benchmark:
 - `benchmarkCheckInstallation.py`: fast skript to test, if the installation and the linking was successfull. 20 automata with 12 states. Time limit is 10s.
-- `benchmarkA.py`: 2000 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 600s, the memory limit is 10GiB. Compares Spot and determinisation via product.  
-- `benchmarkB.py`: 500 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Acceptance condition where Spot struggles. The timeout is 1500s, the memory limit is 10GiB. Compares Spot and determinisation via product.
-- `benchmarkC.py`: 2000 automata with 12 states and 0.17 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 1000s, the memory limit is 10GiB. Compares Spot and determinisation via product.
+- `benchmarkA.py`: 2000 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares Spot and determinisation via product.  
+- `benchmarkB.py`: 500 automata with 12 states and 1.12 nondeterministic choices (avg.) per state. Acceptance condition where Spot struggles. The timeout is 1500s, the memory limit is 20GB. Compares Spot and determinisation via product.
+- `benchmarkC.py`: 2000 automata with 12 states and 0.17 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares Spot and determinisation via product.
+- `benchmarkD.py`: 2000 automata with 12 states and 2.28 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares Spot and determinisation via product.
