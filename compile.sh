@@ -12,6 +12,7 @@ g++ -I$HOME/usr/include 2detTELA.cc my_determinization.o remfin.o -L$HOME/usr/li
 g++ -I$HOME/usr/include benchmarkA.cc my_determinization.o remfin.o -L$HOME/usr/lib -lspot -lbddx -O2 -o benchmarkA
 g++ -I$HOME/usr/include benchmarkB.cc my_determinization.o remfin.o -L$HOME/usr/lib -lspot -lbddx -O2 -o benchmarkB
 g++ -I$HOME/usr/include benchmarkC.cc my_determinization.o remfin.o -L$HOME/usr/lib -lspot -lbddx -O2 -o benchmarkC
+g++ -I$HOME/usr/include benchmarkD.cc my_determinization.o remfin.o -L$HOME/usr/lib -lspot -lbddx -O2 -o benchmarkD
 
 # return to parent dictionary
 cd ..
