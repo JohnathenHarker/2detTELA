@@ -138,7 +138,7 @@ print('Generating automata')
 lower_bound = 2
 upper_bound = 21
 # number of generated automata
-n = 2
+n = 2000
 
 # call program to produce automata
 p = Popen(['source_code/benchmarkC', '--file', path+"/automaton", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
