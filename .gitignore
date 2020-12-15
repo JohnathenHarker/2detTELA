@@ -50,3 +50,9 @@ source_code/benchmarkC
 source_code/benchmarkD
 source_code/benchmarkF
 figures/fig_compare_all_time.aux
+results/logF
+results/logA
+results/logB
+results/logC
+results/logE
+results/logD

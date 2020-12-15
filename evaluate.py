@@ -26,7 +26,7 @@ def find_bucket(element, limits):
     bucket = 0
     for i in range(len(limits)):
         if limits[i] < element:
-            bucket = i
+            bucket = i+1
     return bucket
 
 # adds one more approach to the data, comparing spot and compare
@@ -64,6 +64,8 @@ def produce_time_histogram_base4_all_approaches(input):
     for i in range(len(limits)):
         data.append({})
         data[i]['limit'] = limits[i]
+    data.append({})
+    data[len(limits)]['limit'] = limits[-1]+1
 
     histogram_base4_add_column(data, input, 'time', 'product', limits)
     histogram_base4_add_column(data, input, 'time', 'me1', limits)
