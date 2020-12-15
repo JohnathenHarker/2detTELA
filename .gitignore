@@ -37,6 +37,11 @@
 # csv files
 *.csv
 
+# latex files
+*.aux
+*.log
+*.gz
+
 # compiled program
 source_code/2detTELA
 source_code/benchmarkA
@@ -44,3 +49,4 @@ source_code/benchmarkB
 source_code/benchmarkC
 source_code/benchmarkD
 source_code/benchmarkF
+figures/fig_compare_all_time.aux

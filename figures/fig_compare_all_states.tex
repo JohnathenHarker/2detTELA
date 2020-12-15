@@ -1,0 +1,85 @@
+\documentclass[12pt]{standalone}	
+\usepackage { tikz }
+\usepackage{pgfplots}
+\usetikzlibrary {arrows , automata , positioning ,calc, arrows.meta, decorations.pathreplacing , intersections, patterns, external}
+\begin{document}
+
+		\begin{tikzpicture}
+		\begin{axis}
+		[
+		xlabel={relative amount of states}, ylabel={percentage of automata},
+		ybar,
+		ymin=0, ymax=0.5, 
+		bar width=5pt,
+		%nodes near coords,
+		height=10cm,
+		%width=\textwidth,
+		width = 15cm,
+		legend columns=1,
+		legend pos=north west,
+		%ticklabel style = {font=\large},
+		%label style = {font=\large},
+		ymajorgrids = true,
+		x tick label style  = {color = black, text width=2cm,align=center},
+		symbolic x coords={ 0.015625, 0.03125, 0.0625, 0.25, 1, 4, 16, 32, 64,   TOL, TOP},
+		xticklabels = {$<\frac{1}{64}$, $< \frac{1}{32}$, $< \frac{1}{16}$, $< \frac{1}{4}$, $<1$, $>1$, $>4$, $>16$, $>32$, $>64$, TOL, TOP},
+		%symbolic x coords={ 1,2,3},
+		xtick = data,
+		ytick={  0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6},
+		]
+		
+		
+		\addplot
+		[
+		line width=1pt,
+		fill = blue,
+		]
+		table [x=limit, y=states_product, col sep=semicolon] {temp.csv};
+		
+		\addplot
+		[
+		line width=1pt,
+		fill = red,
+		]
+		table [x=limit, y=states_me1, col sep=semicolon] {temp.csv};
+		
+		\addplot
+		[
+		line width=1pt,
+		fill = green,
+		]
+		table [x=limit, y=states_me2, col sep=semicolon] {temp.csv};
+		
+		\addplot
+		[
+		line width=1pt,
+		fill = yellow,
+		]
+		table [x=limit, y=states_me3, col sep=semicolon] {temp.csv};
+		
+		\addplot
+		[
+		line width=1pt,
+		fill = pink,
+		]
+		table [x=limit, y=states_limited, col sep=semicolon] {temp.csv};
+		
+
+		
+		
+		\path
+		(axis cs:0.25, \pgfkeysvalueof{/pgfplots/ymin})
+		-- coordinate (tmpmin)
+		(axis cs:1, \pgfkeysvalueof{/pgfplots/ymin})
+		(axis cs:0.25, \pgfkeysvalueof{/pgfplots/ymax})
+		-- coordinate (tmpmax)
+		(axis cs:1, \pgfkeysvalueof{/pgfplots/ymax})
+		;
+		\draw[line width = 1pt, dashed] (tmpmin) -- (tmpmax);
+		
+		
+		\legend{product, approach1, approach2, approach3, limited-deterministic}
+		\end{axis}
+		\end{tikzpicture}
+
+\end{document}
