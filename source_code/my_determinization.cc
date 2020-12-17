@@ -94,6 +94,12 @@ size_of_acc_condition(const spot::acc_cond::acc_code acc)
   return len;
 }
 
+// copmare two automata: use number of states
+bool compare_aut(const spot::twa_graph_ptr& aut1, const spot::twa_graph_ptr& aut2)
+{
+  return aut1->num_states() < aut2->num_states();
+}
+
 spot::twa_graph_ptr
 to_deterministic_tgba(const spot::const_twa_graph_ptr& in, const bool optimisations)
 {
@@ -513,6 +519,8 @@ my_to_deterministic_tgba_4(const spot::const_twa_graph_ptr& in, const bool optim
 
     unsigned n = in->num_sets();
     auto add_acc = spot::acc_cond::acc_code::fin({n}) & spot::acc_cond::acc_code::inf({n}); // add useless condition to keep the number of acc-sets maximal
+
+    vector<spot::twa_graph_ptr> det_automata; 
     for (auto acc : disjuncts)
     {
       //cout << "acc: " << acc << endl;
@@ -523,7 +531,8 @@ my_to_deterministic_tgba_4(const spot::const_twa_graph_ptr& in, const bool optim
       {
         bool found = false;
         for (auto ap_res : copy->ap())
-        {
+        {temp_hoas/benchmarkE/automatonD307.hoa	9	FALSCH	FALSCH	942	0,00938	11	FALSCH	FALSCH	488666	1,38305	53	FALSCH	FALSCH	21418	0,600396	27	FALSCH	FALSCH	1512656	64,8671	27	FALSCH	FALSCH	4325119	190,953	31	FALSCH	FALSCH	8568	0,416623	58
+
           if (ap_res == ap)
           {
             found = true;
@@ -542,13 +551,7 @@ my_to_deterministic_tgba_4(const spot::const_twa_graph_ptr& in, const bool optim
       copy->set_acceptance(mod_acc);
      // cout << "num acc sets3: " << copy->num_sets() << endl;
       auto det_copy = to_deterministic_tgba(copy, optimisations);
-      /*
-      if (! spot::are_equivalent(copy, det_copy))
-      {
-        std::cout << "ERROR in  copy in my_to_generalized_buchi_4" << std::endl;
-        send_to_temp_hoa_file(copy);
-      }
-      */
+
       // register all aps from the copy that are not already registered by res
       for (auto ap : det_copy->ap())
       {
@@ -566,10 +569,49 @@ my_to_deterministic_tgba_4(const spot::const_twa_graph_ptr& in, const bool optim
         }
         
       }
+      
+      det_automata.push_back(det_copy);
 
-      // add copy to result
-      res = spot::product_or(res, det_copy);
     }
+
+    std::sort(det_automata.begin(), det_automata.end(), compare_aut);
+    if (det_automata.size() > 0)
+    {
+      res = det_automata[0];
+    }
+    // build product of the deterministic automata
+    for (auto det_aut : det_automata)
+    {
+      // add copy to result
+      // check if one automaton accepts a supersset of the other one
+      //cout << det_aut->num_states() << endl;
+      if (spot::contains(det_aut, res))
+      {
+        // det_aut contains res
+        if (spot::contains(res, det_aut))
+        {
+          // automata are equivalent
+          if (det_aut->num_states() < res->num_states())
+          {
+            // automata are equivalent and det_aut is smaller
+            res = det_aut;
+          }
+        }
+        else
+        {
+          // det_aut contains res, but not the other way around
+          res = det_aut;
+        }
+      }
+      else if (!spot::contains(res, det_aut))
+      {
+        res = spot::product_or(res, det_aut);
+      }
+      // implicit case: if automata are equal and res is smaller
+      // OR res contains det_aut, but not the other way around:
+      // keept res as it is
+    }
+
     
     // try to simplify the automaton
     res->purge_dead_states();
@@ -585,6 +627,7 @@ my_to_deterministic_tgba_4(const spot::const_twa_graph_ptr& in, const bool optim
     return res;
   }
 }
+
 
 spot::twa_graph_ptr
 my_to_limited_deterministic(const spot::const_twa_graph_ptr& in, const bool optimisations, const bool check_result)
@@ -615,22 +658,18 @@ my_to_limited_deterministic(const spot::const_twa_graph_ptr& in, const bool opti
 
     unsigned n = in->num_sets();
     auto add_acc = spot::acc_cond::acc_code::fin({n}) & spot::acc_cond::acc_code::inf({n}); // add useless condition to keep the number of acc-sets maximal
+
+    vector<spot::twa_graph_ptr> det_automata; 
     for (auto acc : disjuncts)
     {
-      //cout << "acc: " << acc << endl;
       // create copy of the automaton with the same properties as 'in'
       auto copy = spot::make_twa_graph(in, {true, true, true, true, true, true});
-      //cout << "num acc sets: " << copy->num_sets() << endl;
       spot::cleanup_acceptance_here(copy);
-      //cout << "num acc sets2: " << copy->num_sets() << endl;
       auto mod_acc = acc| add_acc;
-      //cout << "dnf of mod_acc: " << mod_acc.to_dnf() << endl;
       copy->set_acceptance(mod_acc);
-     // cout << "num acc sets3: " << copy->num_sets() << endl;
       auto det_copy = to_deterministic_tgba(copy, optimisations);
-     
+
       // register all aps from the copy that are not already registered by res
-      /*
       for (auto ap : det_copy->ap())
       {
         bool found = false;
@@ -646,32 +685,41 @@ my_to_limited_deterministic(const spot::const_twa_graph_ptr& in, const bool opti
           res->register_ap(ap);
         }
         
-      }*/
+      }
+      
+      det_automata.push_back(det_copy);
 
-      if (! spot::are_equivalent(copy, det_copy))
+    }
+
+    std::sort(det_automata.begin(), det_automata.end(), compare_aut);
+    // build product of the deterministic automata
+    for (auto det_aut : det_automata)
+    {
+      if (!spot::contains(res, det_aut))
       {
-        std::cout << "ERROR in my_to_limited_deterministic: copy not identical" << std::endl;
+        // add copy to result if it is not already contained
+        res = my_add_limited_twa(res, det_aut, det_aut->get_acceptance());
       }
 
-      // add copy to result
-      res = my_add_limited_twa(res, det_copy, det_copy->get_acceptance());
     }
+
     
     // try to simplify the automaton
     res->purge_dead_states();
     spot::cleanup_acceptance_here(res);
+    res->prop_universal(false);
+    spot::is_universal(res); // set the is_universal() property
 
     if (check_result)
     {
       if (! spot::are_equivalent(res, in))
       {
-        std::cout << "ERROR in my_to_limited_deterministic" << std::endl;
+        std::cout << "ERROR in my_to_limited_deterministic_new" << std::endl;
       }
     }
     return res;
   }
 }
-
 float
 avg_num_nondet_choices(const spot::const_twa_graph_ptr& in)
 {
