@@ -24,7 +24,7 @@ Spot is installed locally in the home directory. If you have problems with Spot,
 ### Compile the source code
 If you used `./install.sh`, you can skip this step. Otherwise, compile the source code  by executing `./compile.sh`. 
 ## Run Experiments
-Call `Python3 benchmarkname.py` to run a benchmark.  
+Call `python3 benchmarkname.py` to run a benchmark.  
 Each benchmark skript contains the variables `TIMEOUT`, `CORES` and `MEM_LIMIT`. Change these to adjust:
 - the timeout of the determinisations 
 - the IDs of the cores that the program uses (and therefore the number of parallel executions). Note: two of the cores are used for the wathcdog processes, you need at least three cores.
@@ -45,3 +45,7 @@ Each Python skrip runs one benchmark:
 - `benchmarkD.py`: 2000 automata with 12 states and 2.28 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares Spot and determinisation via product.
 - `benchmarkE.py`: 999 automata with 12 states and 0.17, 1.12 or 2.28 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares all approaches (Spot, determinisation via product, the three other new determinization algorithms, limited-deterministic).
 - `benchmarkF.py`: 2000 automata with 15 states and 3.3 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 41 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares determinisation via product and limited-deterministic.
+
+
+## Create Figures
+Running `python3 evaluate.py` after running the bechmarks produces a number of `.csv` files in the folder `figure` that are used by the LaTex scripts in the same folder to create all the plots.
