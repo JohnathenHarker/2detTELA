@@ -1,0 +1,58 @@
+\documentclass[12pt]{standalone}	
+\usepackage[dvipsnames]{xcolor}
+\usepackage { tikz }
+\usepackage{pgfplots}
+
+\usetikzlibrary {arrows , automata , positioning ,calc, arrows.meta, decorations.pathreplacing , intersections, patterns, external}
+\begin{document}
+
+		\begin{tikzpicture}
+		\begin{axis}
+		[
+		xlabel={states Spot}, ylabel={states product },
+		xmin=5, xmax=100000000,
+		%ybar,
+		ymode=log,
+		xmode=log,
+		ymin=5, ymax=1000000, 
+		%bar width=5pt,
+		%	nodes near coords,
+		height=10cm,
+		width=14cm,
+		legend columns=1,
+		legend pos=north west,
+		%ticklabel style = {font=\large},
+		%label style = {font=\large},
+		xtick={ 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000},
+		ytick={ 1, 10, 100, 1000, 10000, 100000, 1000000},
+		]
+		
+		
+		\addplot[
+		line width=0pt,
+		color=black,
+		fill = BrickRed,
+		%mark=x,
+		only marks,
+		] 
+		table[x=spot, y=product, col sep=semicolon] {benchmarkB_scatter_states.csv};
+		
+		\addplot[
+		line width = 0.5pt,
+		%color = black,
+		]
+		coordinates{(0.001,0.001) (1000000, 1000000)};
+		
+		% plot for median value
+		% value from benchmarkB_median_mean
+		\addplot [domain=0.01:100000000,
+		line width = 1pt,no marks,
+		style = dotted]    {0.00432209329491473*x};
+		
+		
+		\legend{}
+		\end{axis}
+		\end{tikzpicture}
+
+		
+\end{document}
