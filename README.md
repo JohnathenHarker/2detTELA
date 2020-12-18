@@ -48,4 +48,5 @@ Each Python skrip runs one benchmark:
 
 
 ## Create Figures
-Running `python3 evaluate.py` after running the bechmarks produces a number of `.csv` files in the folder `figure` that are used by the LaTex scripts in the same folder to create all the plots.
+Running `python3 evaluate.py` after running the bechmarks produces a number of `.csv` files in the folder `figures` that are used by the LaTex scripts in the same folder to create all the plots.  
+Running `make_figures.sh` in the folder `figures` calls `pdflatex` to produce all the figures from the `.tex` files.
