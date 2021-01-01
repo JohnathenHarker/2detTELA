@@ -16,12 +16,12 @@
 		enlarge x limits = 0.2,
 		%xlabel shift = {-10pt},
 		ybar,
-		ymin=0, ymax=3, 
+		ymin=0, ymax=2, 
 		bar width=10pt,
 		%nodes near coords,
 		height=7cm,
 		%width=\textwidth,
-		width = 7cm,
+		width = 6.5cm,
 		legend columns=2,
 		legend pos=north west,
 		%ticklabel style = {font=\large},
@@ -34,7 +34,10 @@
 		%xticklabel style = {rotate=45, anchor = east, color = black,},
 		%symbolic x coords={ 1,2,3},
 		xtick = data,
-		ytick={  0, 0.5, 1.0, 1.5, 2.0, 2.5},
+		ytick={  0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8},
+		extra y ticks = {1.0},
+		extra y tick labels={},
+		extra y tick style={grid=major,major grid style={thick,draw=black}}
 		]
 		
 		

@@ -9,35 +9,32 @@
 		\begin{tikzpicture}
 		\begin{axis}
 		[
-		title={product/spot},
-		ylabel={median ratio of number of states},
-		xlabel = {number of nondet. choices},
+		title={limited det./product},
+		%ylabel={portion of automata},
+		xlabel = {ratio of state spaces},
 		xlabel near ticks,
-		enlarge x limits = 0.2,
-		%xlabel shift = {-10pt},
+		xlabel shift = {-10pt},
 		ybar,
-		ymin=0, ymax=2, 
+		ymin=0, ymax=0.6, 
 		bar width=10pt,
 		%nodes near coords,
-		height=7cm,
+		height=4.5cm,
 		%width=\textwidth,
-		width = 6.5cm,
-		legend columns=2,
+		width = 7cm,
+		legend columns=1,
 		legend pos=north west,
 		%ticklabel style = {font=\large},
 		%label style = {font=\large},
 		ymajorgrids = true,
 		%symbolic x coords={ 0.015625, 0.03125, 0.0625, 0.25, 1, 4, 16, 32, 64, 65,   TOL, TOP},
 		%xticklabels = {$<\frac{1}{64}$,  $<\frac{1}{32}$, $< \frac{1}{16}$, $< \frac{1}{4}$, $< 1$, $\geq1$, $\geq 4$, $\geq 16$, $\geq32$, $\geq64$, TOL, TOP},
-		symbolic x coords={ 0.17, 1.12, 2.28},
-		xticklabels = {0.17, 1.12, 2.28},
-		%xticklabel style = {rotate=45, anchor = east, color = black,},
+		symbolic x coords={ 0.25, 0.5, 1, 2, 4, 5,  TOL, TOP},
+		xticklabels = {$<0.25$,  $<$0.5, $< 1$, $\geq1$, $\geq 2$, $\geq 4$, TOL, TOP},
+		xticklabel style = {rotate=45, anchor = east, color = black,},
 		%symbolic x coords={ 1,2,3},
 		xtick = data,
-		ytick={  0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8},
-		extra y ticks = {1.0},
-		extra y tick labels={},
-		extra y tick style={grid=major,major grid style={thick,draw=black}}
+		ytick={  0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7},
+		yticklabels = {0\%, 10\%, 20\%, 30\%, 40\%, 50\%, 60\%, 70\%},
 		]
 		
 		
@@ -46,20 +43,21 @@
 		line width=1pt,
 		fill = BrickRed,
 		]
-		table [x=nondet, y=median_states_low_acc, col sep=semicolon] {product_vs_spot.csv};
-		
-
-		\addplot
-		[
-		line width=1pt,
-		fill = Salmon,
-		]
-		table [x=nondet, y=median_states_high_acc, col sep=semicolon] {product_vs_spot.csv};
+		table [x=limit, y=states_limited, col sep=semicolon] {benchmarkF_his_states.csv};
 		
 		
+		\path
+		(axis cs:1, \pgfkeysvalueof{/pgfplots/ymin})
+		-- coordinate (tmpmin)
+		(axis cs:2, \pgfkeysvalueof{/pgfplots/ymin})
+		(axis cs:1, \pgfkeysvalueof{/pgfplots/ymax})
+		-- coordinate (tmpmax)
+		(axis cs:2, \pgfkeysvalueof{/pgfplots/ymax})
+		;
+		\draw[line width = 1pt, dashed] (tmpmin) -- (tmpmax);
 		
 		
-		\legend{small acc, large acc}
+		\legend{}
 		\end{axis}
 		\end{tikzpicture}
 

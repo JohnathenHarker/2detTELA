@@ -319,6 +319,33 @@ def produce_csv_median_mean_complex_cnf(input, ap1, ap2):
 
     return result
 
+# produces a .csv file for a histogram with buckets with base 4
+def produce_time_histogram_product_vs_limited(input):
+    # limits for the buckets
+    limits = [0.25, 0.5, 1, 2,  4]
+    data=[]
+    for i in range(len(limits)):
+        data.append({})
+        data[i]['limit'] = limits[i]
+    data.append({})
+    data[len(limits)]['limit'] = limits[-1]+1
+
+    histogram_add_column(data, input, 'time', 'product', 'limited', limits, 0, 50)
+    return data
+
+# produces a .csv file for a histogram with buckets with base 4
+def produce_states_histogram_product_vs_limited(input):
+    # limits for the buckets
+    limits = [0.25, 0.5, 1, 2,  4]
+    data=[]
+    for i in range(len(limits)):
+        data.append({})
+        data[i]['limit'] = limits[i]
+    data.append({})
+    data[len(limits)]['limit'] = limits[-1]+1
+
+    histogram_add_column(data, input, 'states', 'product', 'limited', limits, 0, 50)
+    return data
 
 
 ####################################################################################
@@ -328,6 +355,8 @@ dataE = read_csv("results/benchmarkE.csv")
 write_csv("figures/benchmarkE_his_states.csv", produce_states_histogram_all_approaches(dataE))
 write_csv("figures/benchmarkE_his_time.csv", produce_time_histogram_all_approaches(dataE))
 write_csv("figures/benchmarkE_his_acc.csv", produce_acc_histogram_all_approaches(dataE))
+write_csv("figures/benchmarkE_scatter_states.csv", produce_scatter_plot(dataE, 'states', 'spot', 'product'))
+
 
 # produce data for benchmarkA, benchmarkC and benchmarkD
 median_states = produce_csv_median_mean(["results/benchmarkC.csv", "results/benchmarkA.csv", "results/benchmarkD.csv"], 'spot', 'product')
@@ -339,5 +368,10 @@ write_csv("figures/benchmarkB_scatter_states.csv", produce_scatter_plot(dataB, '
 write_csv("figures/benchmarkB_scatter_time.csv", produce_scatter_plot(dataB, 'time', 'spot', 'product'))
 median_statesB = produce_csv_median_mean_complex_cnf(read_csv("results/benchmarkB.csv"), 'spot', 'product')
 write_csv("figures/benchmarkB_median_mean.csv", median_statesB)
+
+# produce histograms to compare det. by product with limited det.
+dataF = read_csv("results/benchmarkF.csv")
+write_csv("figures/benchmarkF_his_states.csv", produce_states_histogram_product_vs_limited(dataE))
+write_csv("figures/benchmarkF_his_time.csv", produce_time_histogram_product_vs_limited(dataE))
 
 
