@@ -145,10 +145,12 @@ upper_bound = 21
 n = 333
 
 # call program to produce automata
-p = Popen(['source_code/benchmarkA', '--file', path+"/automatonA", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
-p = Popen(['source_code/benchmarkC', '--file', path+"/automatonC", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
-p = Popen(['source_code/benchmarkD', '--file', path+"/automatonD", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
-p.wait()
+p1 = Popen(['source_code/benchmarkA', '--file', path+"/automatonA", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
+p2 = Popen(['source_code/benchmarkC', '--file', path+"/automatonC", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
+p3 = Popen(['source_code/benchmarkD', '--file', path+"/automatonD", '--n', str(n), '--l', str(lower_bound), '--u', str(upper_bound)])
+p1.wait()
+p2.wait()
+p3.wait()
 
 
 
