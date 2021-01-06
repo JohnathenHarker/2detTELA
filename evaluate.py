@@ -160,6 +160,33 @@ def mean(input, type, base, compare, min_acc, max_acc):
     else:
         return -1
 
+# counts the number of timeouts
+def number_of_timeouts(input, base):
+    n = 0
+    if 'timeout_'+base in input[0]:
+        for i in range(len(input)):
+            # current row that is processed
+            row = input[i]
+            # check, wether timeout occurs            
+            if row['timeout_'+base] == 'True':
+                n = n+1
+    else:
+        return '-', '-'
+    return n, n/len(input)
+
+# counts the number of memouts
+def number_of_memouts(input, base):
+    n = 0
+    if 'memout_'+base in input[0]:
+        for i in range(len(input)):
+            # current row that is processed
+            row = input[i]
+            # check, wether memout occurs            
+            if row['memout_' + base] == 'True':
+                n = n+1
+    else:
+        return '-', '-'
+    return n, n/len(input)
 
 # produces a .csv file for a histogram with buckets with base 4
 def produce_time_histogram_all_approaches(input):
@@ -347,6 +374,34 @@ def produce_states_histogram_product_vs_limited(input):
     histogram_add_column(data, input, 'states', 'product', 'limited', limits, 0, 50)
     return data
 
+# counts the number of timeouts and memouts
+# input is a list of benchmarks
+# names is a list of names for the benchmarks
+def count_outs(input, names):
+    data=[]
+    if len(names) != len(input):
+        print("ERROR: list lengths need to be the same")
+        return data
+    for i in range(len(names)):
+        data.append({})
+        data[i]['benchmark'] = names[i]
+        data[i]['timeout_spot'], data[i]['timeout_spot_relative'] = number_of_timeouts(input[i], 'spot')
+        data[i]['memout_spot'], data[i]['memeout_spot_relative'] = number_of_memouts(input[i], 'spot')
+        data[i]['timeout_product'], data[i]['timeout_product_relative'] = number_of_timeouts(input[i], 'product')
+        data[i]['memout_product'], data[i]['memeout_product_relative'] = number_of_memouts(input[i], 'product')
+        data[i]['timeout_limited'], data[i]['timeout_limited_relative'] = number_of_timeouts(input[i], 'limited')
+        data[i]['memout_limited'], data[i]['memeout_limited_relative'] = number_of_memouts(input[i], 'limited')
+        data[i]['timeout_me1'], data[i]['timeout_me1_relative'] = number_of_timeouts(input[i], 'me1')
+        data[i]['memout_me1'], data[i]['memeout_me1_relative'] = number_of_memouts(input[i], 'me1')
+        data[i]['timeout_me2'], data[i]['timeout_me2_relative'] = number_of_timeouts(input[i], 'me2')
+        data[i]['memout_me2'], data[i]['memeout_me2_relative'] = number_of_memouts(input[i], 'me2')
+        data[i]['timeout_me3'], data[i]['timeout_me3_relative'] = number_of_timeouts(input[i], 'me3')
+        data[i]['memout_me3'], data[i]['memeout_me3_relative'] = number_of_memouts(input[i], 'me3')
+
+    return data    
+
+
+
 
 ####################################################################################
 
@@ -374,4 +429,6 @@ dataF = read_csv("results/benchmarkF.csv")
 write_csv("figures/benchmarkF_his_states.csv", produce_states_histogram_product_vs_limited(dataE))
 write_csv("figures/benchmarkF_his_time.csv", produce_time_histogram_product_vs_limited(dataE))
 
-
+# produce table with number of timeouts/ memouts
+dataG = read_csv("results/benchmarkG.csv")
+write_csv("figures/count_timeouts.csv", count_outs([dataE, dataB, dataF, dataG], ["benchmarkE", "benchmarkB", "benchmarkF", "benchmarkG"]))
