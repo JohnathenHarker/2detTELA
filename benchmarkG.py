@@ -14,10 +14,8 @@ TIMEOUT = 1500
 
 # IDs of the cores that the program should use; the first two cores are used for the wathchdog processes, the other cores for the parallel determinisation
 CORES = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-
 # memory limit for the processes in kB
 MEM_LIMIT = 20000000 # 20 GB
-
 
 # path where the automata for the benchmark are stored
 
@@ -91,7 +89,11 @@ def evaluate_aut(aut, core):
     old_automaton = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'old_aut'], core)
     spot = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'spot'], core)
     product = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'product'], core)
-    return [core, aut,old_automaton, spot, product]
+    me1 = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'me1'], core)
+    me2 = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'me2'], core)
+    me3 = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'me3'], core)
+    limited = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'limited'], core)
+    return [core, aut,old_automaton, spot, product, me1, me2, me3, limited]
 
 
 # store the results of the evaluations
@@ -173,12 +175,28 @@ print('write result into ', path_evaluation +'/benchmarkG.csv')
 ## run evaluation
 with open(path_evaluation+'/benchmarkG.csv', mode='w') as out_csv:
     csv_writer = csv.writer(out_csv, delimiter= ';')
-    csv_writer.writerow(['aut','old_acc', 'timeout_spot', 'memout_spot', 'states_spot', 'time_spot', 'acc_spot', 'timeout_product', 'memout_product', 'states_product', 'time_product', 'acc_product'])
+    csv_writer.writerow(['aut','old_acc',
+    'timeout_spot', 'memout_spot', 'states_spot', 'time_spot', 'acc_spot',
+    'timeout_product', 'memout_product', 'states_product', 'time_product', 'acc_product',
+    'timeout_me1', 'memout_me1', 'states_me1', 'time_me1', 'acc_me1',
+    'timeout_me2', 'memout_me2', 'states_me2', 'time_me2', 'acc_me2',
+    'timeout_me3', 'memout_me3', 'states_me3', 'time_me3', 'acc_me3',
+    'timeout_limited', 'memout_limited', 'states_limited', 'time_limited', 'acc_limited',])
     for row in evaluation:
         aut = row[0]
         old_automaton = row[1]
         spot = row[2]
         product = row[3]
-        csv_writer.writerow([aut, old_automaton['acc'], spot['timeout'], spot['memout'], spot['states'], spot['time'], spot['acc'], product['timeout'], product['memout'], product['states'], product['time'], product['acc'],])
+        me1 = row[4]
+        me2 = row[5]
+        me3 = row[6]
+        limited = row[7]
+        csv_writer.writerow([aut, old_automaton['acc'], 
+        spot['timeout'], spot['memout'], spot['states'], spot['time'], spot['acc'], 
+        product['timeout'], product['memout'], product['states'], product['time'], product['acc'],
+        me1['timeout'], me1['memout'], me1['states'], me1['time'], me1['acc'],
+        me2['timeout'], me2['memout'], me2['states'], me2['time'], me2['acc'],
+        me3['timeout'], me3['memout'], me3['states'], me3['time'], me3['acc'],
+        limited['timeout'], limited['memout'], limited['states'], limited['time'], limited['acc']])
 
 print('finished at', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
