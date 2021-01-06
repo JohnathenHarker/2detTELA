@@ -45,6 +45,7 @@ Each Python skrip runs one benchmark:
 - `benchmarkD.py`: 2000 automata with 12 states and 2.28 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares Spot and determinisation via product.
 - `benchmarkE.py`: 999 automata with 12 states and 0.17, 1.12 or 2.28 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 21 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares all approaches (Spot, determinisation via product, the three other new determinization algorithms, limited-deterministic).
 - `benchmarkF.py`: 2000 automata with 15 states and 3.3 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 41 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares determinisation via product and limited-deterministic.
+- `benchmarkG.py`: sequence of 50 automata that are described as an example in the thesis. The timeout is 1500s, the memory limit is 20GB. Compares Spot and determinisation via product.
 
 
 ## Create Figures
