@@ -76,6 +76,16 @@ int main(int argc, char* argv[])
         acc = size_of_acc_condition(res->get_acceptance());
     }
 
+    if (type == "product_unoptimised" || type == "me4_unoptimised")
+    {
+        t = clock();
+        auto res =  my_to_deterministic_tgba_4_unoptimised(pa->aut, true, false);
+        t = clock() -t;
+        states = res->num_states();
+        time = ((float)t)/CLOCKS_PER_SEC;
+        acc = size_of_acc_condition(res->get_acceptance());
+    }
+
     if (type == "limited" || type == "limited-deterministic")
     {
         t = clock();

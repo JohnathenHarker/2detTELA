@@ -91,11 +91,12 @@ def evaluate_aut(aut, core):
     old_automaton = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'old_aut'], core)
     spot = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'spot'], core)
     product = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'product'], core)
+    product_unoptimised = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'product_unoptimised'], core)
     me1 = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'me1'], core)
     me2 = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'me2'], core)
     me3 = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'me3'], core)
     limited = popen_evaluation(['source_code/2detTELA', '--file', aut, '--type', 'limited'], core)
-    return [core, aut,old_automaton, spot, product, me1, me2, me3, limited]
+    return [core, aut,old_automaton, spot, product, product_unoptimised, me1, me2, me3, limited]
 
 
 # store the results of the evaluations
@@ -189,6 +190,7 @@ with open(path_evaluation+'/benchmarkE.csv', mode='w') as out_csv:
     csv_writer.writerow(['aut','old_acc',
     'timeout_spot', 'memout_spot', 'states_spot', 'time_spot', 'acc_spot',
     'timeout_product', 'memout_product', 'states_product', 'time_product', 'acc_product',
+    'timeout_product_unoptimiesed', 'memout_product_unoptimiesed', 'states_product_unoptimiesed', 'time_product_unoptimiesed', 'acc_product_unoptimiesed',
     'timeout_me1', 'memout_me1', 'states_me1', 'time_me1', 'acc_me1',
     'timeout_me2', 'memout_me2', 'states_me2', 'time_me2', 'acc_me2',
     'timeout_me3', 'memout_me3', 'states_me3', 'time_me3', 'acc_me3',
@@ -198,13 +200,15 @@ with open(path_evaluation+'/benchmarkE.csv', mode='w') as out_csv:
         old_automaton = row[1]
         spot = row[2]
         product = row[3]
-        me1 = row[4]
-        me2 = row[5]
-        me3 = row[6]
-        limited = row[7]
+        product_unoptimised = row[4]
+        me1 = row[5]
+        me2 = row[6]
+        me3 = row[7]
+        limited = row[8]
         csv_writer.writerow([aut, old_automaton['acc'], 
         spot['timeout'], spot['memout'], spot['states'], spot['time'], spot['acc'], 
         product['timeout'], product['memout'], product['states'], product['time'], product['acc'],
+        product_unoptimised['timeout'], product_unoptimised['memout'], product_unoptimised['states'], product_unoptimised['time'], product_unoptimised['acc'],
         me1['timeout'], me1['memout'], me1['states'], me1['time'], me1['acc'],
         me2['timeout'], me2['memout'], me2['states'], me2['time'], me2['acc'],
         me3['timeout'], me3['memout'], me3['states'], me3['time'], me3['acc'],

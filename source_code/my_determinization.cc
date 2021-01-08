@@ -628,6 +628,99 @@ my_to_deterministic_tgba_4(const spot::const_twa_graph_ptr& in, const bool optim
   }
 }
 
+spot::twa_graph_ptr
+my_to_deterministic_tgba_4_unoptimised(const spot::const_twa_graph_ptr& in, const bool optimisations, const bool check_result)
+{
+  auto dnf = in->get_acceptance().to_dnf();
+  auto disjuncts = dnf.top_disjuncts();
+
+  // check, if dnf has only one disjunct
+  if (disjuncts.size() <= 1)
+  {
+    // no copying needed, we use the determinization approach of spot
+    return to_deterministic_tgba(in, optimisations);
+  }
+  else
+  {
+    // creating an empty TwA 'res' for the result with the same bdd
+    spot::twa_graph_ptr res = make_twa_graph(in->get_dict());
+
+    // register all atomic propositions of the old automaton
+    for (auto ap : in->ap())
+    {
+      res->register_ap(ap);
+    }
+
+    // the product requires at least one state
+    res->new_states(1);
+    res->set_acceptance(spot::acc_cond::acc_code("f"));
+
+    unsigned n = in->num_sets();
+    auto add_acc = spot::acc_cond::acc_code::fin({n}) & spot::acc_cond::acc_code::inf({n}); // add useless condition to keep the number of acc-sets maximal
+
+    vector<spot::twa_graph_ptr> det_automata; 
+    for (auto acc : disjuncts)
+    {
+      //cout << "acc: " << acc << endl;
+      // create copy of the automaton with the same properties as 'in'
+      auto copy = spot::make_twa_graph(in, {true, true, true, true, true, true});
+      //cout << "num acc sets: " << copy->num_sets() << endl;
+      spot::cleanup_acceptance_here(copy);
+      //cout << "num acc sets2: " << copy->num_sets() << endl;
+      auto mod_acc = acc| add_acc;
+      //cout << "dnf of mod_acc: " << mod_acc.to_dnf() << endl;
+      copy->set_acceptance(mod_acc);
+     // cout << "num acc sets3: " << copy->num_sets() << endl;
+      auto det_copy = to_deterministic_tgba(copy, optimisations);
+
+      // register all aps from the copy that are not already registered by res
+      for (auto ap : det_copy->ap())
+      {
+        bool found = false;
+        for (auto ap_res : res->ap())
+        {
+          if (ap_res == ap)
+          {
+            found = true;
+          }
+        }
+        if (!found)
+        {
+          res->register_ap(ap);
+        }
+        
+      }
+      
+      det_automata.push_back(det_copy);
+
+    }
+
+    if (det_automata.size() > 0)
+    {
+      res = det_automata[0];
+    }
+    // build product of the deterministic automata
+    for (auto det_aut : det_automata)
+    {     
+      res = spot::product_or(res, det_aut);
+    }
+
+    // try to simplify the automaton
+    res->purge_dead_states();
+    spot::cleanup_acceptance_here(res);
+
+    if (check_result)
+    {
+      if (! spot::are_equivalent(res, in))
+      {
+        std::cout << "ERROR in my_to_generalized_buchi_4" << std::endl;
+      }
+    }
+    return res;
+  }
+}
+
+
 
 spot::twa_graph_ptr
 my_to_limited_deterministic(const spot::const_twa_graph_ptr& in, const bool optimisations, const bool check_result)
@@ -720,6 +813,7 @@ my_to_limited_deterministic(const spot::const_twa_graph_ptr& in, const bool opti
     return res;
   }
 }
+
 float
 avg_num_nondet_choices(const spot::const_twa_graph_ptr& in)
 {

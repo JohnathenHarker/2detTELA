@@ -39,6 +39,9 @@ spot::twa_graph_ptr
 my_to_deterministic_tgba_4(const spot::const_twa_graph_ptr& in, const bool optimisations, const bool check_result);
 
 spot::twa_graph_ptr
+my_to_deterministic_tgba_4_unoptimised(const spot::const_twa_graph_ptr& in, const bool optimisations, const bool check_result);
+
+spot::twa_graph_ptr
 my_to_limited_deterministic(const spot::const_twa_graph_ptr& in, const bool optimisations, const bool check_result);
 
 float
