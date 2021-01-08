@@ -13,8 +13,12 @@ from datetime import datetime
 # timeout for the determinisation in s
 TIMEOUT = 1500
 
-# IDs of the cores that the program should use; the first two cores are used for the wathchdog processes, the other cores for the parallel determinisation
+# IDs of the cores that the program should use; the cores are used for the parallel determinisation, if they are not mentioned in WATCHDOG_CORES
 CORES = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+
+# IDs of cores that are used for whatchdog processes; can be a subset of CORES
+# list shuold not be empty, otherwise the whatchdog processes use all cores of the system, which should be avoided
+WATCHDOG_CORES = [0]
 
 # memory limit for the processes in kB
 MEM_LIMIT = 20000000    # 20 GB
@@ -30,8 +34,12 @@ home = os.environ['HOME']
 os.environ['LD_LIBRARY_PATH'] = '%s/usr/lib:%s' % (home,lib_path)
 
 # pin this and watchdog processes to core 0 and 1
-os.system("taskset -p -c " + str(CORES[0]) +","+ str(CORES[1]) + " %d" % os.getpid())
+core_numbers = ""
+for i in WATCHDOG_CORES:
+    core_numbers += str(i) + ","
+core_numbers = core_numbers[:-1]    # delete the last ','
 
+os.system("taskset -p -c " + core_numbers + " %d" % os.getpid())
 def popen_evaluation(command, core):
     # default values
     result = {}
@@ -118,7 +126,7 @@ def log_result(result):
 #### main part ###
 
 # store the cores that are idle
-idleCores = CORES[2:]
+idleCores = list(set(CORES) - set(WATCHDOG_CORES))
 
 ## create directories
 
