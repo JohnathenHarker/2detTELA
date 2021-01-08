@@ -25,10 +25,11 @@ Spot is installed locally in the home directory. If you have problems with Spot,
 If you used `./install.sh`, you can skip this step. Otherwise, compile the source code  by executing `./compile.sh`. 
 ## Run Experiments
 Call `python3 benchmarkname.py` to run a benchmark.  
-Each benchmark skript contains the variables `TIMEOUT`, `CORES` and `MEM_LIMIT`. Change these to adjust:
+Each benchmark skript contains the variables `TIMEOUT`, `CORES`, `WATCHDOG_CORES` and `MEM_LIMIT`. Change these to adjust:
 - the timeout of the determinisations 
-- the IDs of the cores that the program uses (and therefore the number of parallel executions). Note: two of the cores are used for the wathcdog processes, you need at least three cores.
-- the maximum RAM that one of the parallel determinisations can use. Note: you may need about (length(`CORES`)-2)*`MEM_LIMIT` RAM in your machine.
+- the IDs of the cores that the program uses (and therefore the number of parallel executions). Note: should contain at least one ID that is not part of `WATCHDOG_CORES`
+- tht IDs of the cores that are used for the watchdog processes and not for the parallel executions of the determinisation algorithms; amout of elements determins the number of cores for the watchdog processes; can overlap with `CORES`but does not need to do so; should contain at least one element
+- the maximum RAM that one of the parallel determinisations can use. Note: you may need about (length(`CORES`))*`MEM_LIMIT` RAM in your machine.
 
 
 
