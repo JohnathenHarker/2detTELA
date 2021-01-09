@@ -41,9 +41,6 @@ core_numbers = core_numbers[:-1]    # delete the last ','
 
 os.system("taskset -p -c " + core_numbers + " %d" % os.getpid())
 
-# pin this and watchdog processes to core 0 and 1
-os.system("taskset -p -c " + str(CORES[0]) +","+ str(CORES[1]) + " %d" % os.getpid())
-
 def popen_evaluation(command, core):
     # default values
     result = {}
