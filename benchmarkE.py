@@ -14,7 +14,7 @@ from datetime import datetime
 TIMEOUT = 1500
 
 # IDs of the cores that the program should use; the cores are used for the parallel determinisation, if they are not mentioned in WATCHDOG_CORES
-CORES = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+CORES = [0,1,2,3,4,5,6,7]
 
 # IDs of cores that are used for whatchdog processes; can be a subset of CORES
 # list shuold not be empty, otherwise the whatchdog processes use all cores of the system, which should be avoided
