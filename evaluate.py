@@ -26,9 +26,10 @@ def write_csv(filepath, data):
 def find_bucket(element, limits):  
     bucket = 0
     for i in range(len(limits)):
-        if limits[i] < element:
+        if limits[i] <= element:
             bucket = i+1
     return bucket
+
 
 # adds one more approach to the data, comparing spot and compare
 def histogram_add_column(data, input, type, base,  compare, limits, min_acc, max_acc):
@@ -75,7 +76,7 @@ def histogram_add_column(data, input, type, base,  compare, limits, min_acc, max
         data[i][column] = float(data[i][column]) / float(no_out)
     
     return data          
-
+    
 # calculates the median value of the ratio of compare with base
 def median(input, type, base, compare, min_acc, max_acc):
     """
@@ -346,8 +347,23 @@ def produce_csv_median_mean_complex_cnf(input, ap1, ap2):
 
     return result
 
-# produces a .csv file for a histogram with buckets with base 4
-def produce_time_histogram_product_vs_limited(input):
+# produces
+def produce_histogram(input, type, base, compare):
+    """
+    produces histogram comparing two approaches
+
+    Parameters
+    ----------
+    input :     list of dictionaries
+                'raw data' from the benchmark
+    type :      string
+                type of the input that is compared, e.g. 'states', 'time', 'acc'
+    base :      string
+                approach that is used to compare with, e.g. 'spot', 'product'
+    compare :   string
+                approach that is compared with 'base', e.g. 'product', 'me1'
+    """
+        
     # limits for the buckets
     limits = [0.25, 0.5, 1, 2,  4]
     data=[]
@@ -357,22 +373,11 @@ def produce_time_histogram_product_vs_limited(input):
     data.append({})
     data[len(limits)]['limit'] = limits[-1]+1
 
-    histogram_add_column(data, input, 'time', 'product', 'limited', limits, 0, 50)
+
+    histogram_add_column(data, input, type, base, compare, limits, 0, 50)
     return data
 
-# produces a .csv file for a histogram with buckets with base 4
-def produce_states_histogram_product_vs_limited(input):
-    # limits for the buckets
-    limits = [0.25, 0.5, 1, 2,  4]
-    data=[]
-    for i in range(len(limits)):
-        data.append({})
-        data[i]['limit'] = limits[i]
-    data.append({})
-    data[len(limits)]['limit'] = limits[-1]+1
 
-    histogram_add_column(data, input, 'states', 'product', 'limited', limits, 0, 50)
-    return data
 
 # counts the number of timeouts and memouts
 # input is a list of benchmarks
@@ -402,7 +407,6 @@ def count_outs(input, names):
 
 
 
-
 ####################################################################################
 
 # produce histograms for benchmarkE
@@ -426,9 +430,15 @@ write_csv("figures/benchmarkB_median_mean.csv", median_statesB)
 
 # produce histograms to compare det. by product with limited det.
 dataF = read_csv("results/benchmarkF.csv")
-write_csv("figures/benchmarkF_his_states.csv", produce_states_histogram_product_vs_limited(dataE))
-write_csv("figures/benchmarkF_his_time.csv", produce_time_histogram_product_vs_limited(dataE))
+write_csv("figures/benchmarkF_his_states.csv",produce_histogram(dataF, 'states', 'product', 'limited'))
+write_csv("figures/benchmarkF_his_time.csv", produce_histogram(dataF, 'time', 'product', 'limited'))
+
+# produce histograms to compare det. by product with and without optimisation
+write_csv("figures/benchmarkE_his_states_un_vs_opt.csv",produce_histogram(dataE, 'states', 'product', 'product_unoptimiesed'))
+write_csv("figures/benchmarkE_his_time_un_vs_opt.csv", produce_histogram(dataE, 'time', 'product', 'product_unoptimiesed'))
+
 
 # produce table with number of timeouts/ memouts
 dataG = read_csv("results/benchmarkG.csv")
 write_csv("figures/count_timeouts.csv", count_outs([dataE, dataB, dataF, dataG], ["benchmarkE", "benchmarkB", "benchmarkF", "benchmarkG"]))
+

@@ -9,13 +9,13 @@
 		\begin{tikzpicture}
 		\begin{axis}
 		[
-		title={product/spot},
+		title={unoptimised / optimised},
 		%ylabel={portion of automata},
-		xlabel = {ratio of state spaces},
+		xlabel = {ratio of computation times},
 		xlabel near ticks,
 		xlabel shift = {-10pt},
 		ybar,
-		ymin=0, ymax=0.65, 
+		ymin=0, ymax=0.9, 
 		bar width=10pt,
 		%nodes near coords,
 		height=4.5cm,
@@ -28,31 +28,31 @@
 		ymajorgrids = true,
 		%symbolic x coords={ 0.015625, 0.03125, 0.0625, 0.25, 1, 4, 16, 32, 64, 65,   TOL, TOP},
 		%xticklabels = {$<\frac{1}{64}$,  $<\frac{1}{32}$, $< \frac{1}{16}$, $< \frac{1}{4}$, $< 1$, $\geq1$, $\geq 4$, $\geq 16$, $\geq32$, $\geq64$, TOL, TOP},
-		symbolic x coords={ 0.01, 0.1, 1, 10, 100, 101,  TOL, TOP},
-		xticklabels = {$<0.01$,  $<$0.1, $< 1$, $\geq1$, $\geq 10$, $\geq 100$, TOL, TOP},
+		symbolic x coords={ 0.25, 0.5, 1, 2, 4, 5,  TOL, TOP},
+		xticklabels = {$<0.25$,  $<$0.5, $< 1$, $\geq1$, $\geq 2$, $\geq 4$, TOL, TOP},
 		xticklabel style = {rotate=45, anchor = east, color = black,},
 		%symbolic x coords={ 1,2,3},
 		xtick = data,
-		ytick={  0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7},
-		yticklabels = {0\%, 10\%, 20\%, 30\%, 40\%, 50\%, 60\%, 70\%},
+		ytick={  0, 0.2, 0.4, 0.6, 0.8},
+		yticklabels = {0\%, 20\%, 40\%, 60\%, 80\%, 50\%, 60\%, 70\%},
 		]
 		
 		
 		\addplot
 		[
 		line width=1pt,
-		fill = BrickRed,
+		fill = NavyBlue,
 		]
-		table [x=limit, y=states_product, col sep=semicolon] {benchmarkE_his_states.csv};
+		table [x=limit, y=time_product_unoptimiesed, col sep=semicolon] {benchmarkE_his_time_un_vs_opt.csv};
 		
 		
 		\path
 		(axis cs:1, \pgfkeysvalueof{/pgfplots/ymin})
 		-- coordinate (tmpmin)
-		(axis cs:10, \pgfkeysvalueof{/pgfplots/ymin})
+		(axis cs:2, \pgfkeysvalueof{/pgfplots/ymin})
 		(axis cs:1, \pgfkeysvalueof{/pgfplots/ymax})
 		-- coordinate (tmpmax)
-		(axis cs:10, \pgfkeysvalueof{/pgfplots/ymax})
+		(axis cs:2, \pgfkeysvalueof{/pgfplots/ymax})
 		;
 		\draw[line width = 1pt, dashed] (tmpmin) -- (tmpmax);
 		
