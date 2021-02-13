@@ -429,6 +429,8 @@ def count_outs(input, names):
         data[i]['memout_spot'], data[i]['memeout_spot_relative'] = number_of_memouts(input[i], 'spot')
         data[i]['timeout_product'], data[i]['timeout_product_relative'] = number_of_timeouts(input[i], 'product')
         data[i]['memout_product'], data[i]['memeout_product_relative'] = number_of_memouts(input[i], 'product')
+        data[i]['timeout_product_unoptimised'], data[i]['timeout_product_unoptimised_relative'] = number_of_timeouts(input[i], 'product_unoptimiesed')
+        data[i]['memout_product_unoptimised'], data[i]['memeout_product_unoptimised_relative'] = number_of_memouts(input[i], 'product_unoptimiesed')
         data[i]['timeout_limited'], data[i]['timeout_limited_relative'] = number_of_timeouts(input[i], 'limited')
         data[i]['memout_limited'], data[i]['memeout_limited_relative'] = number_of_memouts(input[i], 'limited')
         data[i]['timeout_me1'], data[i]['timeout_me1_relative'] = number_of_timeouts(input[i], 'me1')
