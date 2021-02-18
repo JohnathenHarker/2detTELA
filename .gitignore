@@ -32,10 +32,10 @@
 *.app
 
 # hoa files
-*.hoa
+#*.hoa
 
 # csv files
-*.csv
+#*.csv
 
 # latex files
 *.aux
