@@ -1,0 +1,5 @@
+benchmark;timeout_spot;timeout_spot_relative;memout_spot;memeout_spot_relative;timeout_product;timeout_product_relative;memout_product;memeout_product_relative;timeout_product_unoptimised;timeout_product_unoptimised_relative;memout_product_unoptimised;memeout_product_unoptimised_relative;timeout_limited;timeout_limited_relative;memout_limited;memeout_limited_relative;timeout_me1;timeout_me1_relative;memout_me1;memeout_me1_relative;timeout_me2;timeout_me2_relative;memout_me2;memeout_me2_relative;timeout_me3;timeout_me3_relative;memout_me3;memeout_me3_relative
+benchmarkE;12;0.012012012012012012;61;0.06106106106106106;2;0.002002002002002002;11;0.011011011011011011;0;0.0;17;0.01701701701701702;0;0.0;6;0.006006006006006006;30;0.03003003003003003;37;0.037037037037037035;33;0.03303303303303303;41;0.04104104104104104;32;0.03203203203203203;47;0.04704704704704705
+benchmarkB;0;0.0;261;0.522;0;0.0;0;0.0;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-
+benchmarkF;-;-;-;-;76;0.038;55;0.0275;-;-;-;-;8;0.004;49;0.0245;-;-;-;-;-;-;-;-;-;-;-;-
+benchmarkG;35;0.7;5;0.1;0;0.0;38;0.76;-;-;-;-;0;0.0;38;0.76;17;0.34;19;0.38;17;0.34;19;0.38;17;0.34;19;0.38
