@@ -197,7 +197,7 @@ def number_of_memouts(input, base):
 # produces a .csv file for a histogram with buckets with base 4
 def produce_time_histogram_all_approaches(input):
     # limits for the buckets
-    limits = [0.015625, 0.03125, 0.0625, 0.25,  1, 4, 16, 32, 64]
+    limits = [0.01, 0.1, 1, 10,  100]
     data=[]
     for i in range(len(limits)):
         data.append({})
