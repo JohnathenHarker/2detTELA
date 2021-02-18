@@ -1,6 +1,13 @@
 # 2detTELA
 Program to determinise transition-based Emerson-Lei automata
 
+## Structure  
+the folders constain the following files:  
+- `source_code`: source files of the program
+- `temp_hoas`: sets of the automata that we use in the experiments. The automata are represented by `.hoa`-files.
+- `results`: `.csv`-files with the acquired data from the benchmarks
+- `figures`: `.tex`-files to produce figures for the thesis and the figures themselves 
+
 ## Requirements
 You need 
 - the g++ compiler to compile the source code 
