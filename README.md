@@ -55,6 +55,15 @@ Each Python skrip runs one benchmark:
 - `benchmarkF.py`: 2000 automata with 15 states and 3.3 nondeterministic choices (avg.) per state. Random acceptance conditions range from length 2 to 41 (in DNF). The timeout is 1500s, the memory limit is 20GB. Compares determinisation via product and limited-deterministic.
 - `benchmarkG.py`: sequence of 50 automata that are described as an example in the thesis. The timeout is 1500s, the memory limit is 20GB. Compares all approaches (Spot, determinisation via product, the three other new determinisation algorithms, limited-deterministic).
 
+### Corresponding Benchmarks in Thesis
+Some of the benchmarks are combined to form the benchmarks in the thesis: 
+thesis | repository
+-------|---------
+benchmark 1 | benchmark E
+benchmark 2 | benchmarks A, C, D
+benchmark 3 | benchmark G
+benchmark 4 | benchmark B
+benchmark 5 | benchmark F
 
 ## Create Figures
 Running `python3 evaluate.py` after running the bechmarks produces a number of `.csv` files in the folder `figures` that are used by the LaTex scripts in the same folder to create all the plots.  
