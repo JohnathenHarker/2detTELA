@@ -35,6 +35,15 @@ def find_bucket(element, limits):
 
     return bucket
 
+# find the correct bucket for the element; slightly modified  to put exactly matching values in smaller bucket
+def find_max_bucket(element, limits):  
+    bucket = 0
+    for i in range(len(limits)):
+        if limits[i] < element:
+                bucket = i+1
+
+    return bucket
+
 
 # adds one more approach to the data, comparing spot and compare
 def histogram_add_column(data, input, type, base,  compare, limits, min_acc, max_acc):
@@ -382,7 +391,7 @@ def produce_histogram(input, type, base, compare):
     histogram_add_column(data, input, type, base, compare, limits, 0, 50)
     return data
 
-# produces
+# produces histogram with additional bucket if the ratio is exactly one
 def produce_histogram_equal_1(input, type, base, compare):
     """
     produces histogram comparing two approaches
@@ -412,7 +421,138 @@ def produce_histogram_equal_1(input, type, base, compare):
     histogram_add_column(data, input, type, base, compare, limits, 0, 50)
     return data
 
+# produces histogram for amount of computation time for multiple approaches
+def produce_single_time_histogram(input, approaches):
+    """
+    produces histogram comparing multiple approaches
 
+    Parameters
+    ----------
+    input :     list of dictionaries
+                'raw data' from the benchmark
+    approaces : list of strings
+                list of approachs that are used 
+    """
+    # limits for the buckets
+    limits = [0.01, 0.1, 1, 10, 100, 1500]
+    data=[]
+    for i in range(len(limits)):
+        data.append({})
+        data[i]['limit'] = limits[i]
+    data.append({})
+    data[len(limits)]['limit'] = limits[-1]+1
+
+    for base in approaches:
+        column = 'time_' + base
+        for i in range(len(data)):
+            data[i][column] = 0
+        no_out = 0  # counts the number of rows where no timeout or memout occurs
+        for i in range(len(input)):
+            # add one row
+            row = input[i]
+            # check, that now timeout occurs
+            if row['timeout_'+base] == 'False' and row['memout_'+base] == 'False':
+                no_out += 1
+                data[find_max_bucket(float(row[column]), limits)][column] += 1
+
+        # use relative values
+        for i in range(len(data)):
+            data[i][column] = float(data[i][column]) / float(no_out)
+    
+    return data
+
+# produces histogram for number of states for multiple approaches
+def produce_single_states_histogram(input, approaches):
+    """
+    produces histogram comparing multiple approaches
+
+    Parameters
+    ----------
+    input :     list of dictionaries
+                'raw data' from the benchmark
+    approaces : list of strings
+                list of approachs that are used 
+    """
+    # limits for the buckets
+    limits = [10, 1000, 100000, 10000000, 1000000000]
+    data=[]
+    for i in range(len(limits)):
+        data.append({})
+        data[i]['limit'] = limits[i]
+    data.append({})
+    data[len(limits)]['limit'] = limits[-1]+1
+
+    for base in approaches:
+        column = 'states_' + base
+        for i in range(len(data)):
+            data[i][column] = 0
+        no_out = 0  # counts the number of rows where no timeout or memout occurs
+        for i in range(len(input)):
+            # add one row
+            row = input[i]
+            # check, that now timeout occurs
+            if row['timeout_'+base] == 'False' and row['memout_'+base] == 'False':
+                no_out += 1
+                data[find_max_bucket(float(row[column]), limits)][column] += 1
+
+        # use relative values
+        for i in range(len(data)):
+            data[i][column] = float(data[i][column]) / float(no_out)
+    
+    return data
+
+# produces histogram for size of acceptance condition for multiple approaches
+def produce_single_acc_histogram(input, approaches):
+    """
+    produces histogram comparing multiple approaches
+
+    Parameters
+    ----------
+    input :     list of dictionaries
+                'raw data' from the benchmark
+    approaces : list of strings
+                list of approachs that are used 
+    """
+    # limits for the buckets
+    limits = [1, 2, 4, 8, 16, 32, 64, 128]
+    data=[]
+    for i in range(len(limits)):
+        data.append({})
+        data[i]['limit'] = limits[i]
+    data.append({})
+    data[len(limits)]['limit'] = limits[-1]+1
+
+    for base in approaches:
+        column = 'acc_' + base
+        for i in range(len(data)):
+            data[i][column] = 0
+        no_out = 0  # counts the number of rows where no timeout or memout occurs
+        for i in range(len(input)):
+            # add one row
+            row = input[i]
+            # check, that now timeout occurs
+            if row['timeout_'+base] == 'False' and row['memout_'+base] == 'False':
+                no_out += 1
+                data[find_max_bucket(float(row[column]), limits)][column] += 1
+
+        # use relative values
+        for i in range(len(data)):
+            data[i][column] = float(data[i][column]) / float(no_out)
+
+    # add column with size of input acc
+    column = 'old_acc'
+    for i in range(len(data)):
+            data[i][column] = 0
+    for i in range(len(input)):
+        # add one row
+        row = input[i]
+        # check, that now timeout occurs
+        data[find_max_bucket(float(row[column]), limits)][column] += 1
+     # use relative values
+    for i in range(len(data)):
+        data[i][column] = float(data[i][column]) / float(len(input))
+
+    return data
 
 # counts the number of timeouts and memouts
 # input is a list of benchmarks
@@ -452,6 +592,13 @@ write_csv("figures/benchmarkE_his_states.csv", produce_states_histogram_all_appr
 write_csv("figures/benchmarkE_his_time.csv", produce_time_histogram_all_approaches(dataE))
 write_csv("figures/benchmarkE_his_acc.csv", produce_acc_histogram_all_approaches(dataE))
 write_csv("figures/benchmarkE_scatter_states.csv", produce_scatter_plot(dataE, 'states', 'spot', 'product'))
+
+write_csv("figures/benchmarkE_his_individual_time.csv", produce_single_time_histogram(dataE, ['spot', 'product', 'me1', 'me2', 'me3', 'limited']))
+write_csv("figures/benchmarkE_his_individual_states.csv", produce_single_states_histogram(dataE, ['spot', 'product', 'me1', 'me2', 'me3', 'limited']))
+write_csv("figures/benchmarkE_his_individual_acc.csv", produce_single_acc_histogram(dataE, ['spot', 'product', 'me1', 'me2', 'me3', 'limited']))
+
+
+
 
 
 # produce data for benchmarkA, benchmarkC and benchmarkD
